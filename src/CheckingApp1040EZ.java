@@ -59,7 +59,7 @@ public class CheckingApp1040EZ {
          */
 
         //File and scanner setup
-        File path = new File("src/case");
+        File path = new File("src/case"); //directory
         File allFiles[] = path.listFiles(); //puts all the files in the directory into a list
         Scanner fileCheck = null;
         Scanner kb = new Scanner(System.in);
