@@ -59,7 +59,7 @@ public class CheckingApp1040EZ {
          */
 
         //File and scanner setup
-        File path = new File("src/case"); //directory
+        File path = new File("src/case"); //directory & needs to be in a nonempty directory for program to work
         File allFiles[] = path.listFiles(); //puts all the files in the directory into a list
         Scanner fileCheck = null;
         Scanner kb = new Scanner(System.in);
@@ -68,14 +68,13 @@ public class CheckingApp1040EZ {
         System.out.println("Input in console (1) or analyze files (0)?");
         boolean type = false;
         int determine = -1;
-        while(!type) {
+        while (!type) {
             try {
                 determine = kb.nextInt();
                 if (determine != 0 && determine != 1) {
                     System.out.println("Input either 0 or 1!");
                     kb.nextLine();
-                }
-                else {
+                } else {
                     type = true;
                 }
 
@@ -89,16 +88,15 @@ public class CheckingApp1040EZ {
         //If the user asked to analyze a directory, asked if tax tables are provided
         //!!!!!!IMPORTANT MY PERSONAL TEST CASES DO NOT HAVE LINE 10 PROVIDED!!!!!!
         int table = -1;
-        if(determine == 0) {
+        if (determine == 0) {
             System.out.println("Tax tables provided (1) or not (0)?");
-            while(!type) {
+            while (!type) {
                 try {
                     table = kb.nextInt();
                     if (table != 0 && table != 1) {
                         System.out.println("Input either 0 or 1!");
                         kb.nextLine();
-                    }
-                    else {
+                    } else {
                         type = true;
                     }
                 } catch (InputMismatchException e) {
@@ -110,7 +108,7 @@ public class CheckingApp1040EZ {
 
         //for each loop that runs through every file in the directory and runs only once if manual input
         for (File person : allFiles) {
-            if(determine == 0) { //runs this block if the user decided to analyze files
+            if (determine == 0) { //runs this block if the user decided to analyze files
                 try {
                     fileCheck = new Scanner(person);
                 } catch (FileNotFoundException e) {
@@ -123,10 +121,9 @@ public class CheckingApp1040EZ {
                     line3 = fileCheck.nextInt();
                     line5A = fileCheck.nextInt();
                     line7 = fileCheck.nextInt();
-                    if(table == 1) {
+                    if (table == 1) {
                         line10 = fileCheck.nextInt();
-                    }
-                    else {
+                    } else {
                         line10 = -1;
                     }
                 } catch (NoSuchElementException e) {
@@ -150,12 +147,11 @@ public class CheckingApp1040EZ {
 
             //Line 2 - fail case
             if (line2 > 1500) {
-                System.out.println("Can't use the 1040EZ!");
-                if(determine == 0) { //If analyzing files immediately jumps to the next file
+                System.out.println("Can't use the 1040EZ because taxable interest is $" + line2 + "!");
+                if (determine == 0) { //If analyzing files immediately jumps to the next file
                     System.out.println("Going to next case...\n");
                     continue;
-                }
-                else {
+                } else {
                     System.exit(0);
                 }
             }
@@ -168,7 +164,8 @@ public class CheckingApp1040EZ {
 
             //Line 4 method call
             int line4 = line4(line1, line2, line3);
-            System.out.println("Adjusted Gross Income: $" + line4);
+
+
 
             //Line 5A loop
             boolean right = false;
@@ -200,17 +197,15 @@ public class CheckingApp1040EZ {
                 line6 = line6(line4, line5);
             }
 
-            System.out.println("Taxable Income: $" + line6);
 
             //Line 6 fail case
             if (line6 > 100000) {
-                System.out.println("You can't use the 1040EZ!");
+                System.out.println("You can't use the 1040EZ as taxable income is $" + line6 + "!");
 
-                if(determine == 0) { //If analyzing files it immediately jumps to next case
+                if (determine == 0) { //If analyzing files it immediately jumps to next case
                     System.out.println("Going to next case...\n");
                     continue;
-                }
-                else {
+                } else {
                     System.exit(0);
                 }
             }
@@ -225,7 +220,19 @@ public class CheckingApp1040EZ {
             if (line10 == -1) {
                 line10 = line10(line6);
             }
+            //Output all data
+            System.out.println("Wages, Salaries, & Tips: $" + line1);
+            System.out.println("Taxable Interest: $" + line2);
+            System.out.println("Unemployment Compensation & Alaska Permanent Fund Dividends: $" + line3);
+            System.out.println("Adjusted Gross Income: $" + line4);
+            System.out.println("Deduction: $" + line5);
+            System.out.println("Taxable Income: $" + line6);
+            System.out.println("Withheld Federal Income Tax: $" + line7);
+            System.out.println("Earned Income Credit: $" + 0);
+            System.out.println("Total Payments & Credits: $" + line7);
             System.out.println("Tax: $" + line10);
+            System.out.println("Health Care: $" + 0);
+            System.out.println("Total Tax: $" + line10);
 
             //Line 14
             if (line10 > line7) {
@@ -238,7 +245,7 @@ public class CheckingApp1040EZ {
                 int refund = line13(line7, line10);
                 System.out.println("Tax Refund: $" + refund);
             }
-            if(determine == 1) { //stops the loop if manual input
+            if (determine == 1) { //stops the loop if manual input
                 System.exit(0);
             }
             System.out.println(); //makes it look organized
@@ -283,8 +290,7 @@ public class CheckingApp1040EZ {
                 if (line6 < 5) return 0;
                 else if (line6 < 15) return 1;
                 else return 2;
-            }
-            else {
+            } else {
                 if (hundreds < 25) {
                     line6 = line6 - hundreds;
                     tax = line6 / 10 + 1;
@@ -299,8 +305,7 @@ public class CheckingApp1040EZ {
                     tax = line6 / 10 + 2;
                 }
             }
-        }
-        else {
+        } else {
             if (hundreds >= 50) {
                 line6 = line6 - (hundreds - 50);
             } else {
@@ -323,7 +328,8 @@ public class CheckingApp1040EZ {
     public static int line13(int line7, int line10) {
         return line7 - line10;
     }
-    public static int line14( int line7, int line10){
+
+    public static int line14(int line7, int line10) {
         return line10 - line7;
     }
 
