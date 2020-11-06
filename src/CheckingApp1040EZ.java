@@ -132,7 +132,6 @@ public class CheckingApp1040EZ {
                 }
             }
 
-
             //Line 1
             if (line1 == -1) {
                 System.out.println("Input Line 1");
@@ -165,8 +164,6 @@ public class CheckingApp1040EZ {
             //Line 4 method call
             int line4 = line4(line1, line2, line3);
 
-
-
             //Line 5A loop
             boolean right = false;
             if (line5A == -1) {
@@ -197,7 +194,6 @@ public class CheckingApp1040EZ {
                 line6 = line6(line4, line5);
             }
 
-
             //Line 6 fail case
             if (line6 > 100000) {
                 System.out.println("You can't use the 1040EZ as taxable income is $" + line6 + "!");
@@ -220,6 +216,7 @@ public class CheckingApp1040EZ {
             if (line10 == -1) {
                 line10 = line10(line6);
             }
+
             //Output all data
             System.out.println("Wages, Salaries, & Tips: $" + line1);
             System.out.println("Taxable Interest: $" + line2);
